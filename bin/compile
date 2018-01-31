@@ -16,3 +16,4 @@ PROFILE_PATH="$BUILD_DIR/.profile.d/git-secrets.sh"
 mkdir -p $(dirname $PROFILE_PATH)
 echo "ln -s /app/vendor/git-secrets/git-secrets /app/vendor/bin/git-secrets" >> $PROFILE_PATH
 echo "git-secrets --register-aws --global" >> $PROFILE_PATH
+echo "git init /app" >> $PROFILE_PATH
