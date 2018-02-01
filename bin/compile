@@ -24,4 +24,4 @@ curl -o $INSTALL_DIR/$GIT_SECRETS_FILE $GIT_SECRETS_FILE_URL 2>&1 | indent
 
 PROFILE_PATH="$BUILD_DIR/.profile.d/git-secrets.sh"
 mkdir -p $(dirname $PROFILE_PATH)
-echo "while IFS=\n read -r line; do git-secrets --add --global \"\$line\"; done < /app/vendor/git-secrets-provider/$GIT_SECRETS_FILE" >> $PROFILE_PATH
+echo "while IFS=\n read -r line; do /app/vendor/git-secrets/git-secrets --add --global \"\$line\"; done < /app/vendor/git-secrets-provider/$GIT_SECRETS_FILE" >> $PROFILE_PATH
