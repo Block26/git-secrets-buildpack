@@ -14,6 +14,6 @@ git clone https://github.com/awslabs/git-secrets.git $INSTALL_DIR 2>&1 | indent
 
 PROFILE_PATH="$BUILD_DIR/.profile.d/git-secrets.sh"
 mkdir -p $(dirname $PROFILE_PATH)
-#echo "ln -s /app/vendor/git-secrets/git-secrets /app/bin/git-secrets" >> $PROFILE_PATH
+echo "ln -s /app/vendor/git-secrets/git-secrets /app/bin/git-secrets" >> $PROFILE_PATH
 echo "/app/vendor/git-secrets/git-secrets --register-aws --global" >> $PROFILE_PATH
 echo "git init /app" >> $PROFILE_PATH
