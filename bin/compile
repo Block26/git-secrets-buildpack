@@ -4,16 +4,24 @@ indent() {
   sed -u 's/^/       /'
 }
 
-echo "-----> Install git-secrets"
+echo "-----> Install git-secrets provider"
 
 BUILD_DIR=$1
 VENDOR_DIR="$BUILD_DIR/vendor"
-INSTALL_DIR="$BUILD_DIR/vendor/git-secrets"
+INSTALL_DIR="$BUILD_DIR/vendor/git-secrets-provider"
+ENV_DIR=$3
 
-git clone https://github.com/awslabs/git-secrets.git $INSTALL_DIR 2>&1 | indent
+if [ ! -f "$ENV_DIR/GIT_SECRETS_FILE_URL" ]; then
+	echo "-----> You must define the environment variable GIT_SECRETS_FILE_URL."
+	exit 1
+fi
+
+mkdir -p $INSTALL_DIR
+
+GIT_SECRETS_FILE_URL=$(cat $ENV_DIR/GIT_SECRETS_FILE_URL)
+GIT_SECRETS_FILE=`basename $GIT_SECRETS_FILE_URL`
+curl -o $INSTALL_DIR/$GIT_SECRETS_FILE $GIT_SECRETS_FILE_URL 2>&1 | indent
 
 PROFILE_PATH="$BUILD_DIR/.profile.d/git-secrets.sh"
 mkdir -p $(dirname $PROFILE_PATH)
-echo "ln -s /app/vendor/git-secrets/git-secrets /app/vendor/bin/git-secrets" >> $PROFILE_PATH
-echo "git-secrets --register-aws --global" >> $PROFILE_PATH
-echo "git init /app" >> $PROFILE_PATH
+echo "while IFS=\n read -r line; do git-secrets --add --global \"\$line\"; done < /app/vendor/git-secrets-provider/$GIT_SECRETS_FILE" >> $PROFILE_PATH
